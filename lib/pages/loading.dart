@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:CloudBurst/pages/home.dart';
-import 'package:CloudBurst/customclass.dart';
-import 'package:CloudBurst/customwidgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:CloudBurst/services/Weather_Data.dart';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -11,10 +10,30 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
+  void makeRequest() async {
+    weatherdata request = weatherdata(location: 'delhi');
+    await request.getweather();
+    print(request.temp);
+    print(request.country);
+    print(request.location);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    makeRequest();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text('this is loading page'),
+    return const Scaffold(
+      backgroundColor: Colors.blue,
+      body: Center(
+        child: SpinKitCubeGrid(
+          color: Colors.white,
+          size: 50.0,
+        ),
+      ),
     );
   }
 }

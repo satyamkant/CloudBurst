@@ -11,7 +11,15 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //to avoid resizing when keyboard opens...
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[800],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/loading');
+        },
+        child: const Icon(Icons.add),
+      ),
 
       //app bar starts here...
       appBar: AppBar(
@@ -44,20 +52,20 @@ class _HomeState extends State<Home> {
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     children: [
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                           child: ScriptText(
                             normalTxt: '29',
                             normalTxtStyle: const TextStyle(
-                              fontFamily: 'Roboto-Regular',
+                              fontFamily: 'Sacramento',
                               fontSize: 100,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -65,7 +73,7 @@ class _HomeState extends State<Home> {
                             supTxt: '0',
                             supOffset: const Offset(0, -50.0),
                             supTxtStyle: const TextStyle(
-                              fontFamily: 'Roboto-Regular',
+                              fontFamily: 'Sacramento',
                               fontSize: 30,
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -73,13 +81,10 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
                       Expanded(
                         flex: 2,
                         child: Container(
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(20),
                           child: RichText(
                             text: const TextSpan(
                               children: [
@@ -103,33 +108,8 @@ class _HomeState extends State<Home> {
               ),
             ),
             Expanded(
-              flex: 2,
-              child: SizedBox(
-                width: 300,
-                child: Opacity(
-                  opacity: 0.7,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Type City Name',
-                      hintStyle: TextStyle(
-                        color: Colors.grey[800],
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      filled: true,
-                      focusColor: Colors.blue,
-                      fillColor: Colors.grey[300],
-                      prefixIcon: Icon(
-                        Icons.location_on,
-                        color: Colors.grey[800],
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              flex: 3,
+              child: Custom_Search_Bar(),
             ),
           ],
         ),
