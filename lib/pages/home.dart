@@ -8,18 +8,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Map data = {};
+  Map tmp = {};
+
   @override
   Widget build(BuildContext context) {
+    data = (ModalRoute.of(context)!.settings.arguments == null)
+        ? tmp
+        : ModalRoute.of(context)!.settings.arguments as Map;
+
     return Scaffold(
       //to avoid resizing when keyboard opens...
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[800],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/loading');
-        },
-        child: const Icon(Icons.add),
-      ),
 
       //app bar starts here...
       appBar: AppBar(
@@ -62,22 +63,46 @@ class _HomeState extends State<Home> {
                         flex: 2,
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                          child: ScriptText(
-                            normalTxt: '29',
-                            normalTxtStyle: const TextStyle(
-                              fontFamily: 'Sacramento',
-                              fontSize: 100,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            supTxt: '0',
-                            supOffset: const Offset(0, -50.0),
-                            supTxtStyle: const TextStyle(
-                              fontFamily: 'Sacramento',
-                              fontSize: 30,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: (data['temperature'] != 'Invalid' &&
+                                            data['temperature'] != null)
+                                        ? data['temperature']
+                                        : 'Enter Location',
+                                    style: const TextStyle(
+                                      fontFamily: 'Sacramento',
+                                      fontSize: 70,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              RichText(
+                                text: TextSpan(children: [
+                                  WidgetSpan(
+                                    child: Transform.translate(
+                                      offset: const Offset(0.0, -30.0),
+                                      child: Text(
+                                        (data['unit'] != 'Invalid' &&
+                                                data['unit'] != null)
+                                            ? '0'
+                                            : '',
+                                        style: const TextStyle(
+                                          fontFamily: 'Sacramento',
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              )
+                            ],
                           ),
                         ),
                       ),
@@ -86,11 +111,14 @@ class _HomeState extends State<Home> {
                         child: Container(
                           padding: const EdgeInsets.all(20),
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Ranchi',
-                                  style: TextStyle(
+                                  text: (data['location'] != 'Invalid' &&
+                                          data['location'] != null)
+                                      ? data['location']
+                                      : '',
+                                  style: const TextStyle(
                                     fontFamily: 'Roboto-Light',
                                     fontSize: 35,
                                     fontWeight: FontWeight.normal,
@@ -109,7 +137,10 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
               flex: 3,
-              child: Custom_Search_Bar(),
+              child: Custom_Search_Bar(
+                  incoming: (data['location'] == 'Invalid')
+                      ? 'Invalid Location'
+                      : 'Type City Name'),
             ),
           ],
         ),
